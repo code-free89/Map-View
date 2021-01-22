@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>RapidQuote™ | Shauler</title>
+    <meta name="description" content="Responsive, Bootstrap, BS4" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.42&key=AIzaSyBoY4Yn60USF1fDNIm65QVpRBowNeBBgbA&libraries=places"></script>
+    <link rel="stylesheet" href="assets/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="assets/css/style.css" type="text/css" />
+    <link rel="stylesheet" href="assets/css/i-con.css" type="text/css" />
+    <link rel="stylesheet" href="assets/css/custom.css" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/foundation-datepicker.min.css">
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/custom.js"></script>
+    <script src="assets/js/foundation-datepicker.js"></script>
+    <!-- <link type="text/css" href="css/bootstrap-timepicker.min.css" /> -->
+    <script type="text/javascript" src="assets/js/bootstrap-timepicker.js"></script>
+</head>
+
+<body>
+    <header id="header" class="page-header bg-white box-shadow sticky p-3" style="height: 60px;">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="col-3 text-left ml-4">
+                <img src="assets/images/Group 521.png" width="50px" alt="">
+            </div>
+            <div class="col-3 text-right h-100">
+                <i class="fa fa-phone fa-flip-horizontal" aria-hidden="true" style="font-size: 25px;"></i><span class="h5 mx-3">Contact Support</span>
+            </div>
+        </div>
+    </header>
+    <div class="row" id="FindMeOnGoogleMap">
+        <div class="col-4">
+            <div class="row mx-5">
+                <span class="h3 font-weight-bold ml-1 mt-5 col-12">Pick up</span>
+                <input id="searchInput_pickup" class="input-controls element-border pac-target-input w-100" type="text" value="Dubai - United Arab Emirates">
+                <div class="row w-100 pt-5">
+                    <div class="col-6 h6 font-weight-bold">Date:</div>
+                    <div class="col-6 h6 font-weight-bold">Time:</div>
+                </div>
+                <div class="input-group row w-100">
+                    <div class="col-6 d-flex">
+                        <input type="text" class="form-control start-date element-border">
+                        <div class="input-group-append">
+                            <span class="input-group-text element-border">
+                                <i class="i-con i-con-calendar"><i></i></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-6 d-flex">
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <input id="timepicker1" type="text" class="form-control input-small">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                        </div>
+                        <div class="input-group-append">
+                            <span class="input-group-text element-border">
+                                <i class="i-con i-con-calendar"><i></i></i>
+                            </span>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+            <div class="row mx-5">
+                <span class="h3 font-weight-bold ml-1 mt-5 col-12">Delivery</span>
+                <input id="searchInput_delivery" class="input-controls element-border pac-target-input w-100" type="text" value="Riyadh 11564, Saudi Arabia">
+            </div>
+            <div class="row mx-5">
+                <span class="h3 font-weight-bold ml-1 mt-5 col-12">Truck Type</span>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-vehicle btn-vehicle-selected vehicle-trailer">Trailer</button>
+                    <button type="button" class="btn btn-vehicle">Reefer</button>
+                </div>
+            </div>
+            <div class="row mx-5 justify-content-between">
+                <input type="button" class="btn btn-primary mt-5" value="Admin Settings" onclick="onSettings()" style="font-size: large; display: none;">
+            </div>
+        </div>
+        <div class="col-8" id="map" style="width: 100%; height: 800px;"></div>
+
+        <div id="admin-settings-modal" class="modal fade" data-backdrop="true" data-dismiss="modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title text-primary h2 pl-2 pt-3">Admin</h5>
+                    </div>
+                    <div class="modal-body p-lg">
+                        <div class="col-12 px-5 d-flex">
+                            <div class="h4 col-8 text-left">Price per Km</div> 
+                            <div class="col-4 d-flex align-items-center">
+                                <input type="text" class="text-input text-center mr-3 union-price" value="2.5" style="max-width: 60px;">
+                                <span class="h6 text-muted mb-0">AED</span>
+                            </div>
+                        </div>
+                        <div class="col-12 px-5 d-flex pt-3">
+                            <div class="h4 col-8 text-left">Saudi Price per Km</div> 
+                            <div class="col-4 d-flex align-items-center">
+                                <input type="text" class="text-input text-center mr-3 saudi-union-price" value="1.5" style="max-width: 60px;">
+                                <span class="h6 text-muted mb-0">AED</span>
+                            </div>
+                        </div>
+                        <div class="col-12 px-5 d-flex pt-3">
+                            <div class="h4 col-8 text-left">Cross-border</div> 
+                            <div class="col-4 d-flex align-items-center">
+                                <input type="text" class="text-input text-center mr-3 border-price" value="200" style="max-width: 60px;">
+                                <span class="h6 text-muted mb-0">AED</span>
+                            </div>
+                        </div>
+                        <div class="col-12 px-5 d-flex pt-3">
+                            <div class="col-8 justify-content-between d-flex">
+                                <span class="h4 text-left">Vehicle Type</span>
+                                <span class="h5 text-right text-muted pt-1">Trailer</span>
+                            </div>
+                            <div class="col-4 d-flex align-items-center">
+                                <input type="text" class="text-input text-center mr-3 trailer-price" value="2.5" style="max-width: 60px;">
+                                <span class="h6 text-muted mb-0">AED</span>
+                            </div>
+                        </div>
+                        <div class="col-12 px-5 pt-0 d-flex pt-3">
+                            <div class="col-8 text-right">
+                                <span class="h5 text-muted pt-1">Reefer</span>
+                            </div>
+                            <div class="col-4 d-flex align-items-center">
+                                <input type="text" class="text-input text-center mr-3 reefer-price" value="2.5" style="max-width: 60px;">
+                                <span class="h6 text-muted mb-0">AED</span>
+                            </div>
+                        </div>
+                        <div class="col-12 px-5 d-flex pt-3">
+                            <div class="h4 col-8 text-left">Seasonal extras</div> 
+                            <div class="col-4 d-flex align-items-center">
+                                <input type="text" class="text-input text-center mr-3 seasonal-extra" value="0" style="max-width: 60px;">
+                                <span class="h6 text-muted mb-0">%</span>
+                            </div>
+                        </div>
+                        <div class="col-12 px-5 d-flex pt-3">
+                            <div class="h4 col-8 text-left">Seasonal Discount</div> 
+                            <div class="col-4 d-flex align-items-center">
+                                <input type="text" class="text-input text-center mr-3 seasonal-discount" value="0" style="max-width: 60px;">
+                                <span class="h6 text-muted mb-0">%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button type="button" class="btn btn-secondary cancel"
+                                data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary save" data-dismiss="modal">Save Settings</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div>
+    </div>
+    <footer class="row mx-0">
+        <div class="col-2 d-flex align-items-center flex-wrap">
+            <span class="h3 font-weight-bold col-12 w-100" id="max-distance">1,057km</span>
+            <h5 class="text-muted col-12">Distance</h4>
+        </div>
+        <div class="col-2 mt-3" id="Cross-border">
+            <a>
+                <i  data-toggle="tooltip" data-placement="top"
+                data-title="Manage how your store calculates and shows tax on your store and reciept." class="i-con i-con-info">
+                    <i class="i-con i-con-border"></i>
+                </i>
+                <span class="text-muted h5">Cross-Borders</span>
+            </a>
+        </div>
+        <div class="col-2 d-flex align-items-center flex-wrap">
+            <div class="h3 font-weight-bold total-price w-100 text-success">AED2,114</div>
+            <h5 class="text-muted">Total Price</h4>
+        </div>
+        <div class="col-2 d-flex align-items-center flex-wrap">
+            <div class="btn btn-primary px-3 sign-up-footer text-center">Sign up to book</div>
+        </div>
+    </footer>
+</body>
+</html>
