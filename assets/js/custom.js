@@ -12,73 +12,17 @@ var ppk_price = 2.5;
 $(document).ready(function () {
     $('#timepicker1').timepicker();
     $('[data-toggle="tooltip"]').tooltip();
-    var height = $(window).height() - 160;
+    var height = $(window).height();
     var width = $(window).width() / 3 * 2;
     $('#map').css("width", width);
     $('#map').css("height", height);
-    $('.start-date').fdatepicker({
-        initialDate: '12-12-2020',
-        format: 'M dd, yyyy',
-        // keyboardNavigation: false,
-        disableDblClickSelection: true,
-        leftArrow: '<<',
-        rightArrow: '>>',
-        //closeIcon: 'X',
-        //closeButton: true
-        // autoShow: false
-    });
-    $('.end-date').fdatepicker({
-        initialDate: '12-12-2020',
-        format: 'M dd, yyyy',
-        // keyboardNavigation: false,
-        disableDblClickSelection: true,
-        leftArrow: '<<',
-        rightArrow: '>>',
-        //closeIcon: 'X',
-        //closeButton: true
-        // autoShow: false
-    });
     initMap();
-    $('.btn-vehicle').on('click', function() {
-        if($(this).hasClass('vehicle-trailer')) {
-            vehicle_type = 0;
-        } else {
-            vehicle_type = 1;
-        }
-        $('.btn-vehicle').removeClass('btn-vehicle-selected');
-        $(this).addClass('btn-vehicle-selected');
-    });
-    $('#admin-settings-modal .save').click(function() {
-        union_price = $('.union-price').val();
-        saudi_union_price = $('.saudi-union-price').val();
-        border_price = $('.border-price').val();
-        trailer_price = $('.trailer-price').val();
-        reefer_price = $('.reefer-price').val();
-        seasonal_extra = $('.seasonal-extra').val();
-        seasonal_discount = $('.seasonal-discount').val();
-    });
-    
-    $('#admin-settings-modal .cancel').click(function() {
-        $('.union-price').val(union_price);
-        $('.saudi-union-price').val(saudi_union_price);
-        $('.border-price').val(border_price);
-        $('.trailer-price').val(trailer_price);
-        $('.reefer-price').val(reefer_price);
-        $('.seasonal-extra').val(seasonal_extra);
-        $('.seasonal-discount').val(seasonal_discount);
-    });
-    var start = $('#searchInput_pickup').val();
-    var end = $('#searchInput_delivery').val();
-    directionsDisplay.setMap(map);
-    drawPath(directionsService, directionsDisplay, start, end);
-
-    CalculatedRecommededDistance();
 });
 
 function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
-      center: { lat: -34.397, lng: 150.644 },
-      zoom: 8,
+      center: { lat: 0, lng: -20 },
+      zoom: 2,
     });
     var latlng = new google.maps.LatLng(28.5355161,77.39102649999995);
     var marker_pickup = new google.maps.Marker({
@@ -110,12 +54,12 @@ function initMap() {
         }
 
         // If the place has a geometry, then present it on a map.
-        if (place.geometry.viewport) {
-            map.fitBounds(place.geometry.viewport);
-        } else {
-            map.setCenter(place.geometry.location);
-            map.setZoom(10);
-        }
+        // if (place.geometry.viewport) {
+        //     map.fitBounds(place.geometry.viewport);
+        // } else {
+        //     map.setCenter(place.geometry.location);
+        //     map.setZoom(10);
+        // }
         
         marker_pickup.setPosition(place.geometry.location);
         marker_pickup.setVisible(true);          
@@ -123,13 +67,6 @@ function initMap() {
         bindDataToForm_pickup(place.formatted_address,place.geometry.location.lat(),place.geometry.location.lng());
         infowindow_pickup.setContent(place.formatted_address);
         infowindow_pickup.open(map, marker_pickup);
-        
-        var start = $('#searchInput_pickup').val();
-        var end = $('#searchInput_delivery').val();
-        directionsDisplay.setMap(map);
-        drawPath(directionsService, directionsDisplay, start, end);
-
-        CalculatedRecommededDistance();
     });
     autocomplete_delivery.bindTo('bounds', map);
     var infowindow_delivery = new google.maps.InfoWindow();
@@ -143,12 +80,12 @@ function initMap() {
         }
 
         // If the place has a geometry, then present it on a map.
-        if (place.geometry.viewport) {
-            map.fitBounds(place.geometry.viewport);
-        } else {
-            map.setCenter(place.geometry.location);
-            map.setZoom(10);
-        }
+        // if (place.geometry.viewport) {
+        //     map.fitBounds(place.geometry.viewport);
+        // } else {
+        //     map.setCenter(place.geometry.location);
+        //     map.setZoom(10);
+        // }
         
         marker_delivery.setPosition(place.geometry.location);
         marker_delivery.setVisible(true);          
@@ -156,13 +93,6 @@ function initMap() {
         bindDataToForm_delivery(place.formatted_address,place.geometry.location.lat(),place.geometry.location.lng());
         infowindow_delivery.setContent(place.formatted_address);
         infowindow_delivery.open(map, marker_delivery);
-        
-        var start = $('#searchInput_pickup').val();
-        var end = $('#searchInput_delivery').val();
-        directionsDisplay.setMap(map);
-        drawPath(directionsService, directionsDisplay, start, end);
-
-        CalculatedRecommededDistance();
     });
     // this function will work on marker move event into map 
     google.maps.event.addListener(marker_pickup, 'dragend', function() {
@@ -263,37 +193,6 @@ function bindDataToForm_delivery(address,lat,lng){
 
  function CalculatedRecommededDistance() {
     CalculateDistanceforAllAlternativeRoutes();
-  
-    // var origin = document.getElementById('searchInput_pickup').value;
-    // var destination = document.getElementById('searchInput_delivery').value;
-  
-    // var geocoder = new google.maps.Geocoder();
-    // var service = new google.maps.DistanceMatrixService();
-  
-    // service.getDistanceMatrix({
-    //   origins: [origin],
-    //   destinations: [destination],
-    //   travelMode: 'DRIVING',
-    //   unitSystem: google.maps.UnitSystem.METRIC,
-    //   avoidHighways: false,
-    //   avoidTolls: false,
-    //   avoidFerries: false
-  
-    // }, function(response, status) {
-    //   var originList = response.originAddresses;
-    //   var destinationList = response.destinationAddresses;
-    //   var outputDiv = document.getElementById('searchInput_pickup');
-    //   outputDiv.text = '';
-    //   //Display distance recommended value
-    //   for (var i = 0; i < originList.length; i++) {
-    //     var results = response.rows[i].elements;
-    //     for (var j = 0; j < results.length; j++) {
-    //       outputDiv.innerHTML += originList[i] + ' to ' + destinationList[j] +
-    //         ': ' + results[j].distance.text + ' in ' +
-    //         results[j].duration.text + '<br>';
-    //     }
-    //   }
-    // });
 }
   
 function CalculateDistanceforAllAlternativeRoutes() {
