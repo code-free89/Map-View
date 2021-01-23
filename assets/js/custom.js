@@ -24,19 +24,31 @@ function initMap() {
       center: { lat: 0, lng: -20 },
       zoom: 2,
     });
-    var latlng = new google.maps.LatLng(28.5355161,77.39102649999995);
+    var latlng = new google.maps.LatLng(-23.5344015, -46.7500668);
     var marker_pickup = new google.maps.Marker({
         map: map,
         position: latlng,
         draggable: true,
         anchorPoint: new google.maps.Point(0, -29)
     });
+    marker_pickup.addListener("click", () => {
+        map.setCenter(marker_pickup.getPosition());
+        console.log(marker_pickup.getPosition());
+        map.setZoom(6);
+        
+    });
     var place_pickup = document.getElementById('searchInput_pickup');
+    latlng = new google.maps.LatLng(46.20656289999999, 6.0785769);
     var marker_delivery = new google.maps.Marker({
         map: map,
         position: latlng,
         draggable: true,
         anchorPoint: new google.maps.Point(0, -29)
+    });
+    marker_delivery.addListener("click", () => {
+        map.setCenter(marker_delivery.getPosition());
+        console.log(marker_delivery.getPosition());
+        map.setZoom(6);
     });
     var place_delivery = document.getElementById('searchInput_delivery');
     var geocoder = new google.maps.Geocoder();
