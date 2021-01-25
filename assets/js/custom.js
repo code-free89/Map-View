@@ -9,6 +9,7 @@ var seasonal_extra = 0;
 var seasonal_discount = 0;
 var vehicle_type = 0;
 var ppk_price = 2.5;
+var zoom_level = 2;
 $(document).ready(function () {
     $('#timepicker1').timepicker();
     $('[data-toggle="tooltip"]').tooltip();
@@ -22,7 +23,7 @@ $(document).ready(function () {
 function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
       center: { lat: 0, lng: -20 },
-      zoom: 2,
+      zoom: zoom_level,
     });
     var latlng = new google.maps.LatLng(-23.5344015, -46.7500668);
     var marker_pickup = new google.maps.Marker({
@@ -32,10 +33,44 @@ function initMap() {
         anchorPoint: new google.maps.Point(0, -29)
     });
     marker_pickup.addListener("click", () => {
+        infowindow_delivery.close();
+        var contents = '<div id="content">'+  
+            '<div id="siteNotice">'+  
+            '</div>'+  
+            '<h1 id="firstHeading" class="firstHeading">Techstrikers</h1>'+  
+            '<div id="bodyContent">'+  
+            '<p>TechStrikers is developed to help you to begin HTML,CSS,XML,JavaScript,'+
+            ' DOM,jQuery,ASP.NET,PHP,SQL Server, MySQL,colors,tutorial,programming,development,' +
+            ' training,learning,reference,examples,source code,demos,tips,color table,' +
+            ' cascading style sheets,asp.net, csharp, c#.net,ADO.NET, OOPS, Entity ' +
+            ' Framework, KnockoutJS, MVC, LINQ, WEB API, Google Map API, Design Patterns etc.</p>'+  
+            '<p><a href="https://www.techstrikers.com">'+  
+            'https://www.techstrikers.com</a></p>'+  
+            '</div>'+  
+            '</div>';
+
+        infowindow_pickup = new google.maps.InfoWindow({
+            content: contents,
+            maxWidth: 200
+        });
+        infowindow_pickup.open(map, marker_pickup);
+    });
+    marker_pickup.addListener("dblclick", () => {
+        infowindow_pickup.close();
+        infowindow_delivery.close();
         map.setCenter(marker_pickup.getPosition());
-        console.log(marker_pickup.getPosition());
-        map.setZoom(6);
-        
+        if(zoom_level == 2) {
+            zoom_level = 6;
+            map.setZoom(zoom_level);
+        }
+        else if(zoom_level == 6) {
+            zoom_level = 20;
+            smoothZoom(map, zoom_level, map.getZoom());            
+        }
+        else if(zoom_level == 20) {
+            zoom_level = 2;
+            smoothZoomout(map, zoom_level, map.getZoom());     
+        }
     });
     var place_pickup = document.getElementById('searchInput_pickup');
     latlng = new google.maps.LatLng(46.20656289999999, 6.0785769);
@@ -46,9 +81,44 @@ function initMap() {
         anchorPoint: new google.maps.Point(0, -29)
     });
     marker_delivery.addListener("click", () => {
+        infowindow_pickup.close();
+        var contents = '<div id="content">'+  
+            '<div id="siteNotice">'+  
+            '</div>'+  
+            '<h1 id="firstHeading" class="firstHeading">Techstrikers</h1>'+  
+            '<div id="bodyContent">'+  
+            '<p>TechStrikers is developed to help you to begin HTML,CSS,XML,JavaScript,'+
+            ' DOM,jQuery,ASP.NET,PHP,SQL Server, MySQL,colors,tutorial,programming,development,' +
+            ' training,learning,reference,examples,source code,demos,tips,color table,' +
+            ' cascading style sheets,asp.net, csharp, c#.net,ADO.NET, OOPS, Entity ' +
+            ' Framework, KnockoutJS, MVC, LINQ, WEB API, Google Map API, Design Patterns etc.</p>'+  
+            '<p><a href="https://www.techstrikers.com">'+  
+            'https://www.techstrikers.com</a></p>'+  
+            '</div>'+  
+            '</div>';
+
+        infowindow_pickup = new google.maps.InfoWindow({
+            content: contents,
+            maxWidth: 200
+        });
+        infowindow_pickup.open(map, marker_delivery);
+    });
+    marker_delivery.addListener("dblclick", () => {
+        infowindow_pickup.close();
+        infowindow_delivery.close();
         map.setCenter(marker_delivery.getPosition());
-        console.log(marker_delivery.getPosition());
-        map.setZoom(6);
+        if(zoom_level == 2) {
+            zoom_level = 6;
+            map.setZoom(zoom_level);  
+        }
+        else if(zoom_level == 6) {
+            zoom_level = 20;
+            smoothZoom(map, zoom_level, map.getZoom());            
+        }
+        else if(zoom_level == 20) {
+            zoom_level = 2;
+            smoothZoomout(map, zoom_level, map.getZoom());     
+        }
     });
     var place_delivery = document.getElementById('searchInput_delivery');
     var geocoder = new google.maps.Geocoder();
@@ -140,6 +210,32 @@ var placeSearch, autocomplete;
     country: 'long_name',
     postal_code: 'short_name'
   };
+
+function smoothZoom (map, max, cnt) {
+    if (cnt >= max) {
+        return;
+    }
+    else {
+        z = google.maps.event.addListener(map, 'zoom_changed', function(event){
+            google.maps.event.removeListener(z);
+            smoothZoom(map, max, cnt + 1);
+        });
+        setTimeout(function(){map.setZoom(cnt)}, 80); // 80ms is what I found to work well on my system -- it might not work well on all systems
+    }
+}
+
+function smoothZoomout(map, min, cnt) {
+    if (cnt < min) {
+        return;
+    }
+    else {
+        z = google.maps.event.addListener(map, 'zoom_changed', function(event){
+            google.maps.event.removeListener(z);
+            smoothZoomout(map, min, cnt - 1);
+        });
+        setTimeout(function(){map.setZoom(cnt)}, 80); // 80ms is what I found to work well on my system -- it might not work well on all systems
+    }
+}
 
 function initAutocomplete() {
   // Create the autocomplete object, restricting the search to geographical
