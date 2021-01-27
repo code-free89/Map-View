@@ -1,72 +1,20 @@
-.sign-up-footer {
-    color: white;
-    background: #0000ffcc;
-    font-size: large;
-    font-weight: 700;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom: black 2px solid;
+.sidenav {
+    height: 95%;
+    width: 20%;
+    position: fixed;
+    z-index: 1;
+    top: 60px;
+    left: 500px;
+    background-color: white;
+    overflow-x: hidden;
+    transition: 0.5s;
 }
-.input-controls {
-    margin-top: 10px;
-    border: 1px solid transparent;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    height: 40px;
-    outline: none;
-    /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); */
-}
-#searchInput_pickup {
-    background-color: #fff;
-    font-family: Roboto;
-    font-size: 15px;
-    font-weight: 300;
-    padding: 0 11px 0 13px;
-    text-overflow: ellipsis;
-}
-#searchInput_pickup:focus {
-    border-color: #4d90fe;
-}
-#searchInput_delivery {
-    background-color: #fff;
-    font-family: Roboto;
-    font-size: 15px;
-    font-weight: 300;
-    padding: 0 11px 0 13px;
-    text-overflow: ellipsis;
-}
-#searchInput_delivery:focus {
-    border-color: #4d90fe;
-}
-
-.element-border {
-    border-radius: 5px;
-    border-color: #bec8ff;
-}
-
-.btn-vehicle {
-    color: #0000007d;
-    background-color: #ffffffc7;
-    border-color: #0000002b;
-    font-size: 20px;
+.nav-title {
+    font-size: 30px;
     font-weight: bold;
 }
-.btn-vehicle:focus{
-    background-color: rgba(0, 0, 255, 0.24);
-    color: rgba(0, 0, 255, 0.705);
-    box-shadow: 0 0 0 0rem rgba(19, 126, 255, 0.25);
-}
 
-.btn-vehicle-selected{
-    background-color: rgba(0, 0, 255, 0.24);
-    color: rgba(0, 0, 255, 0.705);
-    box-shadow: 0 0 0 0rem rgba(19, 126, 255, 0.25);
-}
-
-.text-input {
-    border: 1px solid;
-    border-radius: 5px;
-    border-color: #bec8ff;
-    font-size: medium;
-    height: 35px;
+.chk-filter {
+    font-size: 20px;
+    font-weight: bold;
 }

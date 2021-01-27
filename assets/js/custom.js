@@ -10,6 +10,7 @@ var seasonal_discount = 0;
 var vehicle_type = 0;
 var ppk_price = 2.5;
 var zoom_level = 2;
+var open_flag = 0;
 $(document).ready(function () {
     $('#timepicker1').timepicker();
     $('[data-toggle="tooltip"]').tooltip();
@@ -18,12 +19,95 @@ $(document).ready(function () {
     $('#map').css("width", width);
     $('#map').css("height", height);
     initMap();
+    $('#mySidenav').css("left", $(window).width());
+    $('#mySidenav').removeClass('d-none');
+    open_flag = 0;
 });
 
 function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
       center: { lat: 0, lng: -20 },
       zoom: zoom_level,
+      styles: [
+        { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
+        { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
+        { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
+        {
+          featureType: "administrative.locality",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#d59563" }],
+        },
+        {
+          featureType: "poi",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#d59563" }],
+        },
+        {
+          featureType: "poi.park",
+          elementType: "geometry",
+          stylers: [{ color: "#263c3f" }],
+        },
+        {
+          featureType: "poi.park",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#6b9a76" }],
+        },
+        {
+          featureType: "road",
+          elementType: "geometry",
+          stylers: [{ color: "#38414e" }],
+        },
+        {
+          featureType: "road",
+          elementType: "geometry.stroke",
+          stylers: [{ color: "#212a37" }],
+        },
+        {
+          featureType: "road",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#9ca5b3" }],
+        },
+        {
+          featureType: "road.highway",
+          elementType: "geometry",
+          stylers: [{ color: "#746855" }],
+        },
+        {
+          featureType: "road.highway",
+          elementType: "geometry.stroke",
+          stylers: [{ color: "#1f2835" }],
+        },
+        {
+          featureType: "road.highway",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#f3d19c" }],
+        },
+        {
+          featureType: "transit",
+          elementType: "geometry",
+          stylers: [{ color: "#2f3948" }],
+        },
+        {
+          featureType: "transit.station",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#d59563" }],
+        },
+        {
+          featureType: "water",
+          elementType: "geometry",
+          stylers: [{ color: "#17263c" }],
+        },
+        {
+          featureType: "water",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#515c6d" }],
+        },
+        {
+          featureType: "water",
+          elementType: "labels.text.stroke",
+          stylers: [{ color: "#17263c" }],
+        },
+      ],
     });
     var latlng = new google.maps.LatLng(-23.5344015, -46.7500668);
     var marker_pickup = new google.maps.Marker({
@@ -33,8 +117,17 @@ function initMap() {
         anchorPoint: new google.maps.Point(0, -29)
     });
     marker_pickup.addListener("click", () => {
+        infowindow_pickup.close();
         infowindow_delivery.close();
-        var contents = '<div id="content">'+  
+        map.setCenter(marker_pickup.getPosition());
+        if(zoom_level == 2) {
+            zoom_level = 6;
+            map.setZoom(zoom_level);
+        }
+        else if(zoom_level == 6) {
+            zoom_level = 20;
+            smoothZoom(map, zoom_level, map.getZoom());
+            var contents = '<div id="content">'+  
             '<div id="siteNotice">'+  
             '</div>'+  
             '<h1 id="firstHeading" class="firstHeading">Techstrikers</h1>'+  
@@ -49,23 +142,11 @@ function initMap() {
             '</div>'+  
             '</div>';
 
-        infowindow_pickup = new google.maps.InfoWindow({
-            content: contents,
-            maxWidth: 200
-        });
-        infowindow_pickup.open(map, marker_pickup);
-    });
-    marker_pickup.addListener("dblclick", () => {
-        infowindow_pickup.close();
-        infowindow_delivery.close();
-        map.setCenter(marker_pickup.getPosition());
-        if(zoom_level == 2) {
-            zoom_level = 6;
-            map.setZoom(zoom_level);
-        }
-        else if(zoom_level == 6) {
-            zoom_level = 20;
-            smoothZoom(map, zoom_level, map.getZoom());            
+            infowindow_pickup = new google.maps.InfoWindow({
+                content: contents,
+                maxWidth: 200
+            });
+            setTimeout(function(){infowindow_pickup.open(map, marker_pickup);}, 5000);
         }
         else if(zoom_level == 20) {
             zoom_level = 2;
@@ -82,7 +163,16 @@ function initMap() {
     });
     marker_delivery.addListener("click", () => {
         infowindow_pickup.close();
-        var contents = '<div id="content">'+  
+        infowindow_delivery.close();
+        map.setCenter(marker_delivery.getPosition());
+        if(zoom_level == 2) {
+            zoom_level = 6;
+            map.setZoom(zoom_level);  
+        }
+        else if(zoom_level == 6) {
+            zoom_level = 20;
+            smoothZoom(map, zoom_level, map.getZoom());        
+            var contents = '<div id="content">'+  
             '<div id="siteNotice">'+  
             '</div>'+  
             '<h1 id="firstHeading" class="firstHeading">Techstrikers</h1>'+  
@@ -97,23 +187,11 @@ function initMap() {
             '</div>'+  
             '</div>';
 
-        infowindow_pickup = new google.maps.InfoWindow({
-            content: contents,
-            maxWidth: 200
-        });
-        infowindow_pickup.open(map, marker_delivery);
-    });
-    marker_delivery.addListener("dblclick", () => {
-        infowindow_pickup.close();
-        infowindow_delivery.close();
-        map.setCenter(marker_delivery.getPosition());
-        if(zoom_level == 2) {
-            zoom_level = 6;
-            map.setZoom(zoom_level);  
-        }
-        else if(zoom_level == 6) {
-            zoom_level = 20;
-            smoothZoom(map, zoom_level, map.getZoom());            
+            infowindow_delivery = new google.maps.InfoWindow({
+                content: contents,
+                maxWidth: 200
+            });
+            setTimeout(function(){infowindow_delivery.open(map, marker_delivery);}, 5000);
         }
         else if(zoom_level == 20) {
             zoom_level = 2;
@@ -386,4 +464,14 @@ function calculatePrice(resultDistance, numberOfCountries) {
     total_price += parseInt(bonus_price);
     console.log(total_price);
     $('.total-price').text(total_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "AED");
+}
+
+function openNav() {
+    if(open_flag == 0) {
+        $('#mySidenav').css("left", $(window).width() - $('#mySidenav').width());
+        open_flag = 1;
+    } else {
+        $('#mySidenav').css("left", $(window).width());
+        open_flag = 0;
+    }
 }

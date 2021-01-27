@@ -1795,7 +1795,7 @@ pre code {
     background-color: #ffffff;
     border-color: #93c4ff;
     outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(19, 126, 255, 0.25);
+    /* box-shadow: 0 0 0 0.2rem rgba(19, 126, 255, 0.25); */
 }
 
 .form-control::placeholder {
