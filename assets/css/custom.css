@@ -34,13 +34,13 @@
     background: rgb(39,48,49);
     box-shadow: -2px 2px 2px 0 rgb(178 178 178 / 40%);
     content: "";
-    height: 15px;
+    height: 50px;
     left: 0;
     position: absolute;
-    top: 0;
+    top: -20px;
     transform: translate(-50%,-50%) rotate(-45deg);
-    width: 15px;
-    box-shadow: -6px 4px 4px 0px rgb(196 242 247 / 60%)
+    width: 50px;
+    box-shadow: -9px 8px 7px 0px rgb(196 242 247 / 60%)
 }
 .gm-style-iw-d {
     overflow: hidden !important;
@@ -50,7 +50,7 @@
     position: absolute;
     box-sizing: border-box;
     overflow: hidden;
-    top: 0;
+    top: -20px;
     left: 0;
     /* transform: translate(-50%,-100%); */
     background-color: rgb(39,48,49);
@@ -59,6 +59,7 @@
     padding: 0px;
     max-width: 300px !important;
     max-height: fit-content !important;
+    margin-left: 50px;
 }
 
 .property_title {
