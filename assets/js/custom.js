@@ -25,96 +25,237 @@ $(document).ready(function () {
 });
 
 function initMap() {
+    var ibOptions = {
+      disableAutoPan: false
+      ,maxWidth: 0
+      ,pixelOffset: new google.maps.Size(-140, 0)
+      ,zIndex: null
+      ,boxStyle: {
+        padding: "0px 0px 0px 0px",
+        width: "252px",
+        height: "200px"
+      },
+      closeBoxURL : "",
+      infoBoxClearance: new google.maps.Size(1, 1),
+      isHidden: false,
+      pane: "floatPane",
+      enableEventPropagation: false
+    };
     map = new google.maps.Map(document.getElementById("map"), {
       center: { lat: 0, lng: -20 },
       zoom: zoom_level,
       styles: [
-        { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
-        { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
-        { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
         {
-          featureType: "administrative.locality",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#d59563" }],
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#114a43"
+            }
+          ]
         },
         {
-          featureType: "poi",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#d59563" }],
+          "elementType": "labels.icon",
+          "stylers": [
+            {
+              "visibility": "off"
+            }
+          ]
         },
         {
-          featureType: "poi.park",
-          elementType: "geometry",
-          stylers: [{ color: "#263c3f" }],
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#757575"
+            }
+          ]
         },
         {
-          featureType: "poi.park",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#6b9a76" }],
+          "elementType": "labels.text.stroke",
+          "stylers": [
+            {
+              "color": "#212121"
+            }
+          ]
         },
         {
-          featureType: "road",
-          elementType: "geometry",
-          stylers: [{ color: "#38414e" }],
+          "featureType": "administrative",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#757575"
+            }
+          ]
         },
         {
-          featureType: "road",
-          elementType: "geometry.stroke",
-          stylers: [{ color: "#212a37" }],
+          "featureType": "administrative",
+          "elementType": "geometry.fill",
+          "stylers": [
+            {
+              "color": "#262626"
+            }
+          ]
         },
         {
-          featureType: "road",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#9ca5b3" }],
+          "featureType": "administrative",
+          "elementType": "geometry.stroke",
+          "stylers": [
+            {
+              "color": "#707070"
+            }
+          ]
         },
         {
-          featureType: "road.highway",
-          elementType: "geometry",
-          stylers: [{ color: "#746855" }],
+          "featureType": "administrative.country",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#9e9e9e"
+            }
+          ]
         },
         {
-          featureType: "road.highway",
-          elementType: "geometry.stroke",
-          stylers: [{ color: "#1f2835" }],
+          "featureType": "administrative.land_parcel",
+          "stylers": [
+            {
+              "visibility": "off"
+            }
+          ]
         },
         {
-          featureType: "road.highway",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#f3d19c" }],
+          "featureType": "administrative.locality",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#bdbdbd"
+            }
+          ]
         },
         {
-          featureType: "transit",
-          elementType: "geometry",
-          stylers: [{ color: "#2f3948" }],
+          "featureType": "poi",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#757575"
+            }
+          ]
         },
         {
-          featureType: "transit.station",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#d59563" }],
+          "featureType": "poi.park",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#181818"
+            }
+          ]
         },
         {
-          featureType: "water",
-          elementType: "geometry",
-          stylers: [{ color: "#17263c" }],
+          "featureType": "poi.park",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#616161"
+            }
+          ]
         },
         {
-          featureType: "water",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#515c6d" }],
+          "featureType": "poi.park",
+          "elementType": "labels.text.stroke",
+          "stylers": [
+            {
+              "color": "#1b1b1b"
+            }
+          ]
         },
         {
-          featureType: "water",
-          elementType: "labels.text.stroke",
-          stylers: [{ color: "#17263c" }],
+          "featureType": "road",
+          "elementType": "geometry.fill",
+          "stylers": [
+            {
+              "color": "#2c2c2c"
+            }
+          ]
         },
+        {
+          "featureType": "road",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#8a8a8a"
+            }
+          ]
+        },
+        {
+          "featureType": "road.arterial",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#373737"
+            }
+          ]
+        },
+        {
+          "featureType": "road.highway",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#3c3c3c"
+            }
+          ]
+        },
+        {
+          "featureType": "road.highway.controlled_access",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#4e4e4e"
+            }
+          ]
+        },
+        {
+          "featureType": "road.local",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#616161"
+            }
+          ]
+        },
+        {
+          "featureType": "transit",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#757575"
+            }
+          ]
+        },
+        {
+          "featureType": "water",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#000000"
+            }
+          ]
+        },
+        {
+          "featureType": "water",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#3d3d3d"
+            }
+          ]
+        }
       ],
     });
     var latlng = new google.maps.LatLng(-23.5344015, -46.7500668);
     var marker_pickup = new google.maps.Marker({
         map: map,
         position: latlng,
-        draggable: true,
-        anchorPoint: new google.maps.Point(0, -29)
+        // draggable: true,
+        anchorPoint: new google.maps.Point(0, -29),
+        icon: "assets/images/fav.png"
     });
     marker_pickup.addListener("click", () => {
         infowindow_pickup.close();
@@ -127,26 +268,33 @@ function initMap() {
         else if(zoom_level == 6) {
             zoom_level = 20;
             smoothZoom(map, zoom_level, map.getZoom());
-            var contents = '<div id="content">'+  
-            '<div id="siteNotice">'+  
-            '</div>'+  
-            '<h1 id="firstHeading" class="firstHeading">Techstrikers</h1>'+  
-            '<div id="bodyContent">'+  
-            '<p>TechStrikers is developed to help you to begin HTML,CSS,XML,JavaScript,'+
-            ' DOM,jQuery,ASP.NET,PHP,SQL Server, MySQL,colors,tutorial,programming,development,' +
-            ' training,learning,reference,examples,source code,demos,tips,color table,' +
-            ' cascading style sheets,asp.net, csharp, c#.net,ADO.NET, OOPS, Entity ' +
-            ' Framework, KnockoutJS, MVC, LINQ, WEB API, Google Map API, Design Patterns etc.</p>'+  
-            '<p><a href="https://www.techstrikers.com">'+  
-            'https://www.techstrikers.com</a></p>'+  
-            '</div>'+  
-            '</div>';
+            var contents = `
+            <div class='map_info_wrapper'>
+              <div class='property_content_wrap'>
+                <div class='property_title'>
+                  <span>Lorem Ipsum</span>
+                </div>
+        
+                <div class='property_content'>
+                  <span>Lorem ipsum is a dummy text of the printing and typesetting industry</span>
+                </div>
+
+                <div class='property_activity'>
+                  <span>Activities</span>
+                </div>
+        
+                <div class='property_detail'>
+                  <span><b>Sales:</b> T&W</span>
+                  <span><b>Creation and application:</b> T&W</span>
+                  <span><b>Production:</b> T&W, F&B</span>
+                </div>
+              </div>
+            </div>`;
 
             infowindow_pickup = new google.maps.InfoWindow({
                 content: contents,
-                maxWidth: 200
             });
-            setTimeout(function(){infowindow_pickup.open(map, marker_pickup);}, 5000);
+            setTimeout(function(){infowindow_pickup.open(map, marker_pickup);}, 3000);
         }
         else if(zoom_level == 20) {
             zoom_level = 2;
@@ -159,7 +307,8 @@ function initMap() {
         map: map,
         position: latlng,
         draggable: true,
-        anchorPoint: new google.maps.Point(0, -29)
+        anchorPoint: new google.maps.Point(0, -29),
+        icon: "assets/images/fav.png"
     });
     marker_delivery.addListener("click", () => {
         infowindow_pickup.close();
@@ -172,26 +321,33 @@ function initMap() {
         else if(zoom_level == 6) {
             zoom_level = 20;
             smoothZoom(map, zoom_level, map.getZoom());        
-            var contents = '<div id="content">'+  
-            '<div id="siteNotice">'+  
-            '</div>'+  
-            '<h1 id="firstHeading" class="firstHeading">Techstrikers</h1>'+  
-            '<div id="bodyContent">'+  
-            '<p>TechStrikers is developed to help you to begin HTML,CSS,XML,JavaScript,'+
-            ' DOM,jQuery,ASP.NET,PHP,SQL Server, MySQL,colors,tutorial,programming,development,' +
-            ' training,learning,reference,examples,source code,demos,tips,color table,' +
-            ' cascading style sheets,asp.net, csharp, c#.net,ADO.NET, OOPS, Entity ' +
-            ' Framework, KnockoutJS, MVC, LINQ, WEB API, Google Map API, Design Patterns etc.</p>'+  
-            '<p><a href="https://www.techstrikers.com">'+  
-            'https://www.techstrikers.com</a></p>'+  
-            '</div>'+  
-            '</div>';
+            var contents = `
+            <div class='map_info_wrapper'>
+              <div class='property_content_wrap'>
+                <div class='property_title'>
+                  <span>Lorem Ipsum</span>
+                </div>
+        
+                <div class='property_content'>
+                  <span>Lorem ipsum is a dummy text of the printing and typesetting industry</span>
+                </div>
+
+                <div class='property_activity'>
+                  <span>Activities</span>
+                </div>
+        
+                <div class='property_detail'>
+                  <span><b>Sales:</b> T&W</span>
+                  <span><b>Creation and application:</b> T&W</span>
+                  <span><b>Production:</b> T&W, F&B</span>
+                </div>
+              </div>
+            </div>`;
 
             infowindow_delivery = new google.maps.InfoWindow({
                 content: contents,
-                maxWidth: 200
             });
-            setTimeout(function(){infowindow_delivery.open(map, marker_delivery);}, 5000);
+            setTimeout(function(){infowindow_delivery.open(map, marker_delivery);}, 3000);
         }
         else if(zoom_level == 20) {
             zoom_level = 2;
@@ -203,7 +359,21 @@ function initMap() {
     var autocomplete_pickup = new google.maps.places.Autocomplete(place_pickup);
     var autocomplete_delivery = new google.maps.places.Autocomplete(place_delivery);
     autocomplete_pickup.bindTo('bounds', map);
-    var infowindow_pickup = new google.maps.InfoWindow();
+    var infowindow_pickup = new google.maps.InfoWindow({
+      content: document.getElementById("infobox"),
+      disableAutoPan: false,
+      maxWidth: 150,
+      pixelOffset: new google.maps.Size(-140, 0),
+      zIndex: null,
+      boxStyle: {
+         background: "url('https://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/examples/tipbox.gif') no-repeat",
+         opacity: 0.90,
+         width: "300px"
+     },
+     closeBoxMargin: "12px 4px 2px 2px",
+     closeBoxURL: "https://www.google.com/intl/en_us/mapfiles/close.gif",
+     infoBoxClearance: new google.maps.Size(1, 1)
+    });
     autocomplete_pickup.addListener('place_changed', function() {
         infowindow_pickup.close();
         marker_pickup.setVisible(false);

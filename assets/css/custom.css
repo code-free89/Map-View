@@ -18,3 +18,108 @@
     font-size: 20px;
     font-weight: bold;
 }
+
+#propertymap .gm-style-iw{
+    box-shadow:none;
+    background: rgb(39, 48, 49)!important;
+    color:#515151;
+    font-family: "Georgia", "Open Sans", Sans-serif;
+    text-align: center;
+    width: 100% !important;
+    border-radius: 0;
+    left: 0 !important;
+    top: 20px !important;
+}
+.gm-style .gm-style-iw-t::after {
+    background: rgb(39,48,49);
+    box-shadow: -2px 2px 2px 0 rgb(178 178 178 / 40%);
+    content: "";
+    height: 15px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    transform: translate(-50%,-50%) rotate(-45deg);
+    width: 15px;
+    box-shadow: -6px 4px 4px 0px rgb(196 242 247 / 60%)
+}
+.gm-style-iw-d {
+    overflow: hidden !important;
+}
+
+.gm-style .gm-style-iw-c {
+    position: absolute;
+    box-sizing: border-box;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    /* transform: translate(-50%,-100%); */
+    background-color: rgb(39,48,49);
+    box-shadow: 0px 0px 9px 9px rgb(196 242 247 / 60%);
+    border-radius: 0px;
+    padding: 0px;
+    max-width: 300px !important;
+    max-height: fit-content !important;
+}
+
+.property_title {
+    padding-top: 2rem;
+    padding-left: 1rem;
+    font-size: 23px;
+    font-family: auto;
+    color: rgb(103 222 235);
+}
+
+.property_content {
+    font-family: auto;
+    color: white;
+    font-size: 15px;
+    padding-top: 1rem;
+    flex-wrap: wrap;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.property_activity {
+    padding-top: 2rem;
+    padding-left: 1rem;
+    font-size: 20px;
+    font-family: auto;
+    color: rgb(103 222 235);
+}
+
+.property_detail {
+    font-family: auto;
+    color: white;
+    font-size: 15px;
+    padding-top: 1rem;
+    flex-wrap: wrap;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 2rem;
+}
+
+ /* #propertymap .gm-style > div > div > div > div > div > div > div {
+    background: none!important;
+}
+
+.gm-style > div > div > div > div > div > div > div:nth-child(2) {
+     box-shadow: none!important;
+}
+ #propertymap .gm-style-iw > div > div{
+    background: rgb(39, 48, 49)!important;
+}
+
+ #propertymap .gm-style-iw a{
+    text-decoration: none;
+}
+
+ #propertymap .gm-style-iw > div{
+    width: 245px !important
+}
+ #propertymap .gm-style-iw .property_content_wrap {
+    padding: 0px 20px;
+}
+
+ #propertymap .gm-style-iw .property_title{
+    min-height: auto;
+} */
