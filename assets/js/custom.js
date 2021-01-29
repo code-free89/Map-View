@@ -255,7 +255,10 @@ function initMap() {
         position: latlng,
         // draggable: true,
         anchorPoint: new google.maps.Point(0, -29),
-        icon: "assets/images/fav.png"
+        icon: {
+            url: "assets/images/fav.png", // url
+            scaledSize: new google.maps.Size(20, 20), // scaled size
+        },
     });
     marker_pickup.addListener("click", () => {
         infowindow_pickup.close();
@@ -308,7 +311,10 @@ function initMap() {
         position: latlng,
         draggable: true,
         anchorPoint: new google.maps.Point(0, -29),
-        icon: "assets/images/fav.png"
+        icon: {
+          url: "assets/images/fav.png", // url
+          scaledSize: new google.maps.Size(20, 20), // scaled size
+        },
     });
     marker_delivery.addListener("click", () => {
         infowindow_pickup.close();
