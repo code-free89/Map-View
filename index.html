@@ -21,18 +21,17 @@
     <script src="assets/js/infobox.js"></script>
     <script src="assets/js/custom.js"></script>
     <script src="assets/js/foundation-datepicker.js"></script>
-    <!-- <link type="text/css" href="css/bootstrap-timepicker.min.css" /> -->
     <script type="text/javascript" src="assets/js/bootstrap-timepicker.js"></script>
 </head>
 
 <body>
     <header id="header" class="page-header bg-white box-shadow sticky">
         <div class="row d-flex w-100 justify-content-between mx-0" style="background-color:black; height: 60px;">
-            <div class="col-10 d-flex align-items-center h-100">
-                <img class="float-left" src="assets/images/logo.png" height="60%">
-                <span style="font-size: 40px; color: rgba(103, 222, 235, 0.788); margin-left: 30px;" class="float-left">Givaudan's Virtual Tours</span>
+            <div class="d-flex align-items-center h-100" id="logo">
+                <img id="logo-image" src="assets/images/logo.png" height="60%">
+                <span id="logo-title" style="font-size: 40px; color: rgba(103, 222, 235, 0.788); margin-left: 30px;">Givaudan's Virtual Tours</span>
             </div>
-            <div class="col-2">
+            <div class="" id="more-option">
                 <span style="font-size:40px;cursor:pointer; color: rgba(103, 222, 235, 0.788); margin-right: 30px;" onclick="openNav()" class="float-right">☰</span>
             </div>
         </div>
@@ -78,7 +77,7 @@
             </div>
         </div>
     </div>
-    <div class="row" id="FindMeOnGoogleMap">
+    <div class="row m-0" id="FindMeOnGoogleMap">
         <!-- <div class="col-4">
             <div class="row mx-5">
                 <span class="h3 font-weight-bold ml-1 mt-5 col-12">Pick up</span>

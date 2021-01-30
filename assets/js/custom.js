@@ -9,19 +9,36 @@ var seasonal_extra = 0;
 var seasonal_discount = 0;
 var vehicle_type = 0;
 var ppk_price = 2.5;
-var zoom_level = 2;
+var zoom_level = 4;
 var open_flag = 0;
+var initial_width = -1;
 $(document).ready(function () {
     $('#timepicker1').timepicker();
     $('[data-toggle="tooltip"]').tooltip();
-    var height = $(window).height();
-    var width = $(window).width() / 3 * 2;
-    $('#map').css("width", width);
+    var height = $(window).height() - 60;
     $('#map').css("height", height);
     initMap();
     $('#mySidenav').css("left", $(window).width());
     $('#mySidenav').removeClass('d-none');
     open_flag = 0;
+});
+
+$(window).resize(function() {
+  // var current_width = $(window).width();
+  // console.log($("#logo").width() + $("#more-option").width() + 60);
+  // console.log(current_width);
+  // if(($("#logo").width() + $("#more-option").width() + 60) >= current_width) {
+  //   if(initial_width == -1) {
+  //     console.log('initial');
+  //     initial_width = current_width;
+  //   }
+  // }
+  // else
+  //   initial_width = -1;
+  // if(initial_width != -1) {
+  //   $('#logo-image').css("transform", "scale(" + current_width / initial_width + ")");
+  //   $('#logo-title').css("transform", "scale(" + current_width / initial_width + ")");
+  // }
 });
 
 function initMap() {
@@ -264,11 +281,39 @@ function initMap() {
         infowindow_pickup.close();
         infowindow_delivery.close();
         map.setCenter(marker_pickup.getPosition());
-        if(zoom_level == 2) {
-            zoom_level = 6;
-            map.setZoom(zoom_level);
+        if(zoom_level == 4) {
+            zoom_level = 20;
+            smoothZoom(map, zoom_level, map.getZoom());
+            $('.gm-style-mtc').eq(1).children().eq(0).click();  
+            var contents = `
+            <div class='map_info_wrapper'>
+              <div class='property_content_wrap'>
+                <div class='property_title'>
+                  <span>Lorem Ipsum</span>
+                </div>
+        
+                <div class='property_content'>
+                  <span>Lorem ipsum is a dummy text of the printing and typesetting industry</span>
+                </div>
+
+                <div class='property_activity'>
+                  <span>Activities</span>
+                </div>
+        
+                <div class='property_detail'>
+                  <span><b>Sales:</b> T&W</span>
+                  <span><b>Creation and application:</b> T&W</span>
+                  <span><b>Production:</b> T&W, F&B</span>
+                </div>
+              </div>
+            </div>`;
+
+            infowindow_pickup = new google.maps.InfoWindow({
+                content: contents,
+            });
+            setTimeout(function(){infowindow_pickup.open(map, marker_pickup);}, 3000);
         }
-        else if(zoom_level == 6) {
+        else if(zoom_level == 10) {
             zoom_level = 20;
             smoothZoom(map, zoom_level, map.getZoom());
             var contents = `
@@ -300,8 +345,9 @@ function initMap() {
             setTimeout(function(){infowindow_pickup.open(map, marker_pickup);}, 3000);
         }
         else if(zoom_level == 20) {
-            zoom_level = 2;
+            zoom_level = 4;
             smoothZoomout(map, zoom_level, map.getZoom());     
+            $('.gm-style-mtc').eq(0).children().eq(0).click();  
         }
     });
     var place_pickup = document.getElementById('searchInput_pickup');
@@ -320,13 +366,42 @@ function initMap() {
         infowindow_pickup.close();
         infowindow_delivery.close();
         map.setCenter(marker_delivery.getPosition());
-        if(zoom_level == 2) {
-            zoom_level = 6;
-            map.setZoom(zoom_level);  
-        }
-        else if(zoom_level == 6) {
+        if(zoom_level == 4) {
+          console.log($('.gm-style-mtc').eq(1));
             zoom_level = 20;
-            smoothZoom(map, zoom_level, map.getZoom());        
+            smoothZoom(map, zoom_level, map.getZoom());
+            $('.gm-style-mtc').eq(1).children().eq(0).click();  
+            var contents = `
+            <div class='map_info_wrapper'>
+              <div class='property_content_wrap'>
+                <div class='property_title'>
+                  <span>Lorem Ipsum</span>
+                </div>
+        
+                <div class='property_content'>
+                  <span>Lorem ipsum is a dummy text of the printing and typesetting industry</span>
+                </div>
+
+                <div class='property_activity'>
+                  <span>Activities</span>
+                </div>
+        
+                <div class='property_detail'>
+                  <span><b>Sales:</b> T&W</span>
+                  <span><b>Creation and application:</b> T&W</span>
+                  <span><b>Production:</b> T&W, F&B</span>
+                </div>
+              </div>
+            </div>`;
+
+            infowindow_delivery = new google.maps.InfoWindow({
+                content: contents,
+            });
+            setTimeout(function(){infowindow_delivery.open(map, marker_delivery);}, 3000);
+        }
+        else if(zoom_level == 10) {
+            zoom_level = 20;
+            smoothZoom(map, zoom_level, map.getZoom());      
             var contents = `
             <div class='map_info_wrapper'>
               <div class='property_content_wrap'>
@@ -356,8 +431,9 @@ function initMap() {
             setTimeout(function(){infowindow_delivery.open(map, marker_delivery);}, 3000);
         }
         else if(zoom_level == 20) {
-            zoom_level = 2;
+            zoom_level = 4;
             smoothZoomout(map, zoom_level, map.getZoom());     
+            $('.gm-style-mtc').eq(0).children().eq(0).click();  
         }
     });
     var place_delivery = document.getElementById('searchInput_delivery');
