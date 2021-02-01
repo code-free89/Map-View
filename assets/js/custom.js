@@ -284,12 +284,7 @@ function initMap() {
         if(zoom_level == 3) {
             zoom_level = 18;
             smoothZoom(map, zoom_level, map.getZoom());
-            $('.gm-style-mtc').eq(1).children().eq(0).click();  
-        }
-        else if(zoom_level == 18) {
-            zoom_level = 22;
-            smoothZoom(map, zoom_level, map.getZoom());
-            var contents = `
+            $('.gm-style-mtc').eq(1).children().eq(0).click();  var contents = `
             <div class='map_info_wrapper'>
               <div class='property_content_wrap'>
                 <div class='property_title'>
@@ -317,7 +312,12 @@ function initMap() {
             });
             setTimeout(function(){infowindow_pickup.open(map, marker_pickup);}, 3000);
         }
-        else if(zoom_level == 22) {
+        // else if(zoom_level == 18) {
+        //     zoom_level = 22;
+        //     smoothZoom(map, zoom_level, map.getZoom());
+            
+        // }
+        else if(zoom_level == 18) {
             zoom_level = 3;
             smoothZoomout(map, zoom_level, map.getZoom());     
             $('.gm-style-mtc').eq(0).children().eq(0).click();  
@@ -342,11 +342,7 @@ function initMap() {
         if(zoom_level == 3) {
             zoom_level = 18;
             smoothZoom(map, zoom_level, map.getZoom());
-            $('.gm-style-mtc').eq(1).children().eq(0).click();
-        }
-        else if(zoom_level == 18) {
-            zoom_level = 22;
-            smoothZoom(map, zoom_level, map.getZoom());      
+            $('.gm-style-mtc').eq(1).children().eq(0).click();  
             var contents = `
             <div class='map_info_wrapper'>
               <div class='property_content_wrap'>
@@ -375,7 +371,11 @@ function initMap() {
             });
             setTimeout(function(){infowindow_delivery.open(map, marker_delivery);}, 3000);
         }
-        else if(zoom_level == 22) {
+        // else if(zoom_level == 18) {
+        //     zoom_level = 22;
+        //     smoothZoom(map, zoom_level, map.getZoom());    
+        // }
+        else if(zoom_level == 18) {
             zoom_level = 3;
             smoothZoomout(map, zoom_level, map.getZoom());
             $('.gm-style-mtc').eq(0).children().eq(0).click();  
