@@ -9,7 +9,7 @@ var seasonal_extra = 0;
 var seasonal_discount = 0;
 var vehicle_type = 0;
 var ppk_price = 2.5;
-var zoom_level = 4;
+var zoom_level = 3;
 var open_flag = 0;
 var initial_width = -1;
 $(document).ready(function () {
@@ -281,40 +281,13 @@ function initMap() {
         infowindow_pickup.close();
         infowindow_delivery.close();
         map.setCenter(marker_pickup.getPosition());
-        if(zoom_level == 4) {
-            zoom_level = 20;
+        if(zoom_level == 3) {
+            zoom_level = 18;
             smoothZoom(map, zoom_level, map.getZoom());
             $('.gm-style-mtc').eq(1).children().eq(0).click();  
-            var contents = `
-            <div class='map_info_wrapper'>
-              <div class='property_content_wrap'>
-                <div class='property_title'>
-                  <span>Lorem Ipsum</span>
-                </div>
-        
-                <div class='property_content'>
-                  <span>Lorem ipsum is a dummy text of the printing and typesetting industry</span>
-                </div>
-
-                <div class='property_activity'>
-                  <span>Activities</span>
-                </div>
-        
-                <div class='property_detail'>
-                  <span><b>Sales:</b> T&W</span>
-                  <span><b>Creation and application:</b> T&W</span>
-                  <span><b>Production:</b> T&W, F&B</span>
-                </div>
-              </div>
-            </div>`;
-
-            infowindow_pickup = new google.maps.InfoWindow({
-                content: contents,
-            });
-            setTimeout(function(){infowindow_pickup.open(map, marker_pickup);}, 3000);
         }
-        else if(zoom_level == 10) {
-            zoom_level = 20;
+        else if(zoom_level == 18) {
+            zoom_level = 22;
             smoothZoom(map, zoom_level, map.getZoom());
             var contents = `
             <div class='map_info_wrapper'>
@@ -344,8 +317,8 @@ function initMap() {
             });
             setTimeout(function(){infowindow_pickup.open(map, marker_pickup);}, 3000);
         }
-        else if(zoom_level == 20) {
-            zoom_level = 4;
+        else if(zoom_level == 22) {
+            zoom_level = 3;
             smoothZoomout(map, zoom_level, map.getZoom());     
             $('.gm-style-mtc').eq(0).children().eq(0).click();  
         }
@@ -366,41 +339,13 @@ function initMap() {
         infowindow_pickup.close();
         infowindow_delivery.close();
         map.setCenter(marker_delivery.getPosition());
-        if(zoom_level == 4) {
-          console.log($('.gm-style-mtc').eq(1));
-            zoom_level = 20;
+        if(zoom_level == 3) {
+            zoom_level = 18;
             smoothZoom(map, zoom_level, map.getZoom());
-            $('.gm-style-mtc').eq(1).children().eq(0).click();  
-            var contents = `
-            <div class='map_info_wrapper'>
-              <div class='property_content_wrap'>
-                <div class='property_title'>
-                  <span>Lorem Ipsum</span>
-                </div>
-        
-                <div class='property_content'>
-                  <span>Lorem ipsum is a dummy text of the printing and typesetting industry</span>
-                </div>
-
-                <div class='property_activity'>
-                  <span>Activities</span>
-                </div>
-        
-                <div class='property_detail'>
-                  <span><b>Sales:</b> T&W</span>
-                  <span><b>Creation and application:</b> T&W</span>
-                  <span><b>Production:</b> T&W, F&B</span>
-                </div>
-              </div>
-            </div>`;
-
-            infowindow_delivery = new google.maps.InfoWindow({
-                content: contents,
-            });
-            setTimeout(function(){infowindow_delivery.open(map, marker_delivery);}, 3000);
+            $('.gm-style-mtc').eq(1).children().eq(0).click();
         }
-        else if(zoom_level == 10) {
-            zoom_level = 20;
+        else if(zoom_level == 18) {
+            zoom_level = 22;
             smoothZoom(map, zoom_level, map.getZoom());      
             var contents = `
             <div class='map_info_wrapper'>
@@ -430,9 +375,9 @@ function initMap() {
             });
             setTimeout(function(){infowindow_delivery.open(map, marker_delivery);}, 3000);
         }
-        else if(zoom_level == 20) {
-            zoom_level = 4;
-            smoothZoomout(map, zoom_level, map.getZoom());     
+        else if(zoom_level == 22) {
+            zoom_level = 3;
+            smoothZoomout(map, zoom_level, map.getZoom());
             $('.gm-style-mtc').eq(0).children().eq(0).click();  
         }
     });
