@@ -12,34 +12,31 @@ var ppk_price = 2.5;
 var zoom_level = 3;
 var open_flag = 0;
 var initial_width = -1;
+const labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const locations = [];
+var infowindow;
+var mySpreadsheet = 'https://docs.google.com/spreadsheets/d/1RE7iiyntY6O5ZVHlecHa__LDpFigr-wiIC_X2SUvMpk/edit#gid=0';
 $(document).ready(function () {
-    $('#timepicker1').timepicker();
-    $('[data-toggle="tooltip"]').tooltip();
     var height = $(window).height() - 60;
     $('#map').css("height", height);
-    initMap();
-    $('#mySidenav').css("left", $(window).width());
-    $('#mySidenav').removeClass('d-none');
-    open_flag = 0;
+    $('#statistics').sheetrock({
+      url: mySpreadsheet
+    });
+    setTimeout(() => {
+      initLocations();
+      initMap();
+      $('#mySidenav').css("left", $(window).width());
+      $('#mySidenav').removeClass('d-none');
+      open_flag = 0;
+    }, 2000);
 });
 
-$(window).resize(function() {
-  // var current_width = $(window).width();
-  // console.log($("#logo").width() + $("#more-option").width() + 60);
-  // console.log(current_width);
-  // if(($("#logo").width() + $("#more-option").width() + 60) >= current_width) {
-  //   if(initial_width == -1) {
-  //     console.log('initial');
-  //     initial_width = current_width;
-  //   }
-  // }
-  // else
-  //   initial_width = -1;
-  // if(initial_width != -1) {
-  //   $('#logo-image').css("transform", "scale(" + current_width / initial_width + ")");
-  //   $('#logo-title').css("transform", "scale(" + current_width / initial_width + ")");
-  // }
-});
+function initLocations() {
+  for (let i = 0; i < $('tbody tr').length; i ++)
+  {
+    locations.push({ lat: parseFloat($('tbody tr').eq(i).children().eq(0).text()), lng: parseFloat($('tbody tr').eq(i).children().eq(1).text()) });
+  }
+}
 
 function initMap() {
     var ibOptions = {
@@ -59,7 +56,7 @@ function initMap() {
       enableEventPropagation: false
     };
     map = new google.maps.Map(document.getElementById("map"), {
-      center: { lat: 0, lng: -20 },
+      center: { lat: 20, lng: 25 },
       zoom: zoom_level,
       styles: [
         {
@@ -266,22 +263,19 @@ function initMap() {
         }
       ],
     });
-    var latlng = new google.maps.LatLng(-23.5344015, -46.7500668);
-    var marker_pickup = new google.maps.Marker({
-        map: map,
-        position: latlng,
-        // draggable: true,
-        anchorPoint: new google.maps.Point(0, -29),
+    const markers = locations.map((location, i) => {
+      var marker = new google.maps.Marker({
+        position: location,
+        label: labels[i % labels.length],
         icon: {
-            url: "assets/images/fav.png", // url
-            scaledSize: new google.maps.Size(20, 20), // scaled size
+          url: "assets/images/fav.png", // url
+          scaledSize: new google.maps.Size(20, 20), // scaled size
         },
-    });
-    marker_pickup.addListener("click", () => {
-        infowindow_pickup.close();
-        infowindow_delivery.close();
-        map.setCenter(marker_pickup.getPosition());
-        if(zoom_level == 3) {
+      });
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.close();
+        map.setCenter(this.getPosition());
+        if(zoom_level != 18) {
             zoom_level = 18;
             smoothZoom(map, zoom_level, map.getZoom());
             $('.gm-style-mtc').eq(1).children().eq(0).click();  var contents = `
@@ -306,11 +300,11 @@ function initMap() {
                 </div>
               </div>
             </div>`;
-
-            infowindow_pickup = new google.maps.InfoWindow({
+            infowindow = new google.maps.InfoWindow({
                 content: contents,
             });
-            setTimeout(function(){infowindow_pickup.open(map, marker_pickup);}, 3000);
+            infowindow.open(map, this);
+            // setTimeout(function(){infowindow.open(map, this);}, 2000);
         }
         // else if(zoom_level == 18) {
         //     zoom_level = 22;
@@ -322,71 +316,20 @@ function initMap() {
             smoothZoomout(map, zoom_level, map.getZoom());     
             $('.gm-style-mtc').eq(0).children().eq(0).click();  
         }
+      });
+      return marker;
     });
-    var place_pickup = document.getElementById('searchInput_pickup');
+    new MarkerClusterer(map, markers, {
+      imagePath:
+        "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
+    });
+    var latlng = new google.maps.LatLng(-23.5344015, -46.7500668);
     latlng = new google.maps.LatLng(46.20656289999999, 6.0785769);
-    var marker_delivery = new google.maps.Marker({
-        map: map,
-        position: latlng,
-        draggable: true,
-        anchorPoint: new google.maps.Point(0, -29),
-        icon: {
-          url: "assets/images/fav.png", // url
-          scaledSize: new google.maps.Size(20, 20), // scaled size
-        },
-    });
-    marker_delivery.addListener("click", () => {
-        infowindow_pickup.close();
-        infowindow_delivery.close();
-        map.setCenter(marker_delivery.getPosition());
-        if(zoom_level == 3) {
-            zoom_level = 18;
-            smoothZoom(map, zoom_level, map.getZoom());
-            $('.gm-style-mtc').eq(1).children().eq(0).click();  
-            var contents = `
-            <div class='map_info_wrapper'>
-              <div class='property_content_wrap'>
-                <div class='property_title'>
-                  <span>Lorem Ipsum</span>
-                </div>
-        
-                <div class='property_content'>
-                  <span>Lorem ipsum is a dummy text of the printing and typesetting industry</span>
-                </div>
-
-                <div class='property_activity'>
-                  <span>Activities</span>
-                </div>
-        
-                <div class='property_detail'>
-                  <span><b>Sales:</b> T&W</span>
-                  <span><b>Creation and application:</b> T&W</span>
-                  <span><b>Production:</b> T&W, F&B</span>
-                </div>
-              </div>
-            </div>`;
-
-            infowindow_delivery = new google.maps.InfoWindow({
-                content: contents,
-            });
-            setTimeout(function(){infowindow_delivery.open(map, marker_delivery);}, 3000);
-        }
-        // else if(zoom_level == 18) {
-        //     zoom_level = 22;
-        //     smoothZoom(map, zoom_level, map.getZoom());    
-        // }
-        else if(zoom_level == 18) {
-            zoom_level = 3;
-            smoothZoomout(map, zoom_level, map.getZoom());
-            $('.gm-style-mtc').eq(0).children().eq(0).click();  
-        }
-    });
-    var place_delivery = document.getElementById('searchInput_delivery');
     var geocoder = new google.maps.Geocoder();
-    var autocomplete_pickup = new google.maps.places.Autocomplete(place_pickup);
-    var autocomplete_delivery = new google.maps.places.Autocomplete(place_delivery);
-    autocomplete_pickup.bindTo('bounds', map);
-    var infowindow_pickup = new google.maps.InfoWindow({
+    // var autocomplete_pickup = new google.maps.places.Autocomplete(place_pickup);
+    // var autocomplete_delivery = new google.maps.places.Autocomplete(place_delivery);
+    // autocomplete_pickup.bindTo('bounds', map);
+    infowindow = new google.maps.InfoWindow({
       content: document.getElementById("infobox"),
       disableAutoPan: false,
       maxWidth: 150,
@@ -400,79 +343,6 @@ function initMap() {
      closeBoxMargin: "12px 4px 2px 2px",
      closeBoxURL: "https://www.google.com/intl/en_us/mapfiles/close.gif",
      infoBoxClearance: new google.maps.Size(1, 1)
-    });
-    autocomplete_pickup.addListener('place_changed', function() {
-        infowindow_pickup.close();
-        marker_pickup.setVisible(false);
-        var place = autocomplete_pickup.getPlace();
-        if (!place.geometry) {
-            window.alert("Autocomplete's returned place contains no geometry");
-            return;
-        }
-
-        // If the place has a geometry, then present it on a map.
-        // if (place.geometry.viewport) {
-        //     map.fitBounds(place.geometry.viewport);
-        // } else {
-        //     map.setCenter(place.geometry.location);
-        //     map.setZoom(10);
-        // }
-        
-        marker_pickup.setPosition(place.geometry.location);
-        marker_pickup.setVisible(true);          
-    
-        bindDataToForm_pickup(place.formatted_address,place.geometry.location.lat(),place.geometry.location.lng());
-        infowindow_pickup.setContent(place.formatted_address);
-        infowindow_pickup.open(map, marker_pickup);
-    });
-    autocomplete_delivery.bindTo('bounds', map);
-    var infowindow_delivery = new google.maps.InfoWindow();
-    autocomplete_delivery.addListener('place_changed', function() {
-        infowindow_delivery.close();
-        marker_delivery.setVisible(false);
-        var place = autocomplete_delivery.getPlace();
-        if (!place.geometry) {
-            window.alert("Autocomplete's returned place contains no geometry");
-            return;
-        }
-
-        // If the place has a geometry, then present it on a map.
-        // if (place.geometry.viewport) {
-        //     map.fitBounds(place.geometry.viewport);
-        // } else {
-        //     map.setCenter(place.geometry.location);
-        //     map.setZoom(10);
-        // }
-        
-        marker_delivery.setPosition(place.geometry.location);
-        marker_delivery.setVisible(true);          
-    
-        bindDataToForm_delivery(place.formatted_address,place.geometry.location.lat(),place.geometry.location.lng());
-        infowindow_delivery.setContent(place.formatted_address);
-        infowindow_delivery.open(map, marker_delivery);
-    });
-    // this function will work on marker move event into map 
-    google.maps.event.addListener(marker_pickup, 'dragend', function() {
-        geocoder.geocode({'latLng': marker_pickup.getPosition()}, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            if (results[0]) {        
-                bindDataToForm_pickup(results[0].formatted_address,marker_pickup.getPosition().lat(),marker_pickup.getPosition().lng());
-                infowindow_pickup.setContent(results[0].formatted_address);
-                infowindow_pickup.open(map, marker_pickup);
-            }
-        }
-        });
-    });
-    google.maps.event.addListener(marker_delivery, 'dragend', function() {
-        geocoder.geocode({'latLng': marker_delivery.getPosition()}, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            if (results[0]) {        
-                bindDataToForm_delivery(results[0].formatted_address,marker_delivery.getPosition().lat(),marker_delivery.getPosition().lng());
-                infowindow_delivery.setContent(results[0].formatted_address);
-                infowindow_delivery.open(map, marker_delivery);
-            }
-        }
-        });
     });
 }
 
@@ -511,39 +381,6 @@ function smoothZoomout(map, min, cnt) {
         setTimeout(function(){map.setZoom(cnt)}, 80); // 80ms is what I found to work well on my system -- it might not work well on all systems
     }
 }
-
-function initAutocomplete() {
-  // Create the autocomplete object, restricting the search to geographical
-  // location types.
-  autocomplete = new google.maps.places.Autocomplete(
-    /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
-    {types: ['geocode']});
-
-  // When the user selects an address from the dropdown, populate the address
-  // fields in the form.
-  autocomplete.addListener('place_changed', fillInAddress);
-}
-
-function fillInAddress() {
-  // Get the place details from the autocomplete object.
-  var place = autocomplete.getPlace();
-
-  for (var component in componentForm) {
-    document.getElementById(component).value = '';
-    document.getElementById(component).disabled = false;
-  }
-
-  // Get each component of the address from the place details
-  // and fill the corresponding field on the form.
-  for (var i = 0; i < place.address_components.length; i++) {
-    var addressType = place.address_components[i].types[0];
-    if (componentForm[addressType]) {
-      var val = place.address_components[i][componentForm[addressType]];
-      document.getElementById(addressType).value = val;
-    }
-  }
-}
-
 // Bias the autocomplete object to the user's geographical location,
 // as supplied by the browser's 'navigator.geolocation' object.
 function geolocate() {
@@ -648,18 +485,14 @@ function calculatePrice(resultDistance, numberOfCountries) {
     if($('#searchInput_pickup').val().indexOf("Saudi") >= 0) {ppk_price = saudi_union_price;}
     else {ppk_price = union_price};
     total_price += resultDistance * ppk_price;
-    console.log(total_price);
     // total_price += numberOfCountries * border_price;
     if(numberOfCountries > 1) {total_price += parseInt(border_price);}
-    console.log(total_price);
     // if(vehicle_type == 0) {total_price += resultDistance * trailer_price;}
     // else if(vehicle_type == 1) {total_price += resultDistance * reefer_price;}
     if(vehicle_type == 0) {total_price += parseInt(trailer_price);}
     else if(vehicle_type == 1) {total_price += parseInt(reefer_price);}
-    console.log(total_price);
     var bonus_price = total_price / 100 * (seasonal_extra - seasonal_discount);
     total_price += parseInt(bonus_price);
-    console.log(total_price);
     $('.total-price').text(total_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "AED");
 }
 
