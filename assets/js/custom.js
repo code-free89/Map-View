@@ -13,7 +13,31 @@ var zoom_level = 3;
 var open_flag = 0;
 var initial_width = -1;
 const labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const locations = [];
+const locations = [
+  { lat: -31.56391, lng: 147.154312 },
+  { lat: -33.718234, lng: 150.363181 },
+  { lat: -33.727111, lng: 150.371124 },
+  { lat: -33.848588, lng: 151.209834 },
+  { lat: -33.851702, lng: 151.216968 },
+  { lat: -34.671264, lng: 150.863657 },
+  { lat: -35.304724, lng: 148.662905 },
+  { lat: -36.817685, lng: 175.699196 },
+  { lat: -36.828611, lng: 175.790222 },
+  { lat: -37.75, lng: 145.116667 },
+  { lat: -37.759859, lng: 145.128708 },
+  { lat: -37.765015, lng: 145.133858 },
+  { lat: -37.770104, lng: 145.143299 },
+  { lat: -37.7737, lng: 145.145187 },
+  { lat: -37.774785, lng: 145.137978 },
+  { lat: -37.819616, lng: 144.968119 },
+  { lat: -38.330766, lng: 144.695692 },
+  { lat: -39.927193, lng: 175.053218 },
+  { lat: -41.330162, lng: 174.865694 },
+  { lat: -42.734358, lng: 147.439506 },
+  { lat: -42.734358, lng: 147.501315 },
+  { lat: -42.735258, lng: 147.438 },
+  { lat: -43.999792, lng: 170.463352 },
+];
 var infowindow;
 var mySpreadsheet = 'https://docs.google.com/spreadsheets/d/1RE7iiyntY6O5ZVHlecHa__LDpFigr-wiIC_X2SUvMpk/edit#gid=0';
 $(document).ready(function () {
@@ -37,27 +61,10 @@ function initLocations() {
     locations.push({ lat: parseFloat($('tbody tr').eq(i).children().eq(0).text()), lng: parseFloat($('tbody tr').eq(i).children().eq(1).text()) });
   }
 }
-
 function initMap() {
-    var ibOptions = {
-      disableAutoPan: false
-      ,maxWidth: 0
-      ,pixelOffset: new google.maps.Size(-140, 0)
-      ,zIndex: null
-      ,boxStyle: {
-        padding: "0px 0px 0px 0px",
-        width: "252px",
-        height: "200px"
-      },
-      closeBoxURL : "",
-      infoBoxClearance: new google.maps.Size(1, 1),
-      isHidden: false,
-      pane: "floatPane",
-      enableEventPropagation: false
-    };
     map = new google.maps.Map(document.getElementById("map"), {
-      center: { lat: 20, lng: 25 },
       zoom: zoom_level,
+      center: { lat: 20, lng: -25 },
       styles: [
         {
           "elementType": "geometry",
@@ -266,7 +273,6 @@ function initMap() {
     const markers = locations.map((location, i) => {
       var marker = new google.maps.Marker({
         position: location,
-        label: labels[i % labels.length],
         icon: {
           url: "assets/images/fav.png", // url
           scaledSize: new google.maps.Size(20, 20), // scaled size
@@ -276,52 +282,46 @@ function initMap() {
         infowindow.close();
         map.setCenter(this.getPosition());
         if(zoom_level != 18) {
-            zoom_level = 18;
-            smoothZoom(map, zoom_level, map.getZoom());
-            $('.gm-style-mtc').eq(1).children().eq(0).click();  var contents = `
-            <div class='map_info_wrapper'>
-              <div class='property_content_wrap'>
-                <div class='property_title'>
-                  <span>Lorem Ipsum</span>
-                </div>
-        
-                <div class='property_content'>
-                  <span>Lorem ipsum is a dummy text of the printing and typesetting industry</span>
-                </div>
+          window.location.href = "http://www.blanklink.com";
+        }
+      });
+      google.maps.event.addListener(marker, 'mouseover', function() {
+        var contents = `
+        <div class='map_info_wrapper'>
+          <div class='property_content_wrap'>
+            <div class='property_title'>
+              <span>Lorem Ipsum</span>
+            </div>
+    
+            <div class='property_content'>
+              <span>Lorem ipsum is a dummy text of the printing and typesetting industry</span>
+            </div>
 
-                <div class='property_activity'>
-                  <span>Activities</span>
-                </div>
-        
-                <div class='property_detail'>
-                  <span><b>Sales:</b> T&W</span>
-                  <span><b>Creation and application:</b> T&W</span>
-                  <span><b>Production:</b> T&W, F&B</span>
-                </div>
-              </div>
-            </div>`;
-            infowindow = new google.maps.InfoWindow({
-                content: contents,
-            });
-            infowindow.open(map, this);
-            // setTimeout(function(){infowindow.open(map, this);}, 2000);
-        }
-        // else if(zoom_level == 18) {
-        //     zoom_level = 22;
-        //     smoothZoom(map, zoom_level, map.getZoom());
-            
-        // }
-        else if(zoom_level == 18) {
-            zoom_level = 3;
-            smoothZoomout(map, zoom_level, map.getZoom());     
-            $('.gm-style-mtc').eq(0).children().eq(0).click();  
-        }
+            <div class='property_activity'>
+              <span>Activities</span>
+            </div>
+    
+            <div class='property_detail'>
+              <span><b>Sales:</b> T&W</span>
+              <span><b>Creation and application:</b> T&W</span>
+              <span><b>Production:</b> T&W, F&B</span>
+            </div>
+          </div>
+        </div>`;
+        infowindow = new google.maps.InfoWindow({
+            content: contents,
+        });
+        infowindow.open(map, this);
+      });
+      google.maps.event.addListener(marker, 'mouseout', function() {
+        infowindow.close();
       });
       return marker;
     });
     new MarkerClusterer(map, markers, {
       imagePath:
         "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
+      averageCenter: true,
     });
     var latlng = new google.maps.LatLng(-23.5344015, -46.7500668);
     latlng = new google.maps.LatLng(46.20656289999999, 6.0785769);
@@ -381,24 +381,6 @@ function smoothZoomout(map, min, cnt) {
         setTimeout(function(){map.setZoom(cnt)}, 80); // 80ms is what I found to work well on my system -- it might not work well on all systems
     }
 }
-// Bias the autocomplete object to the user's geographical location,
-// as supplied by the browser's 'navigator.geolocation' object.
-function geolocate() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      var geolocation = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-      var circle = new google.maps.Circle({
-        center: geolocation,
-        radius: position.coords.accuracy
-      });
-      autocomplete.setBounds(circle.getBounds());
-    });
-  }
-}
-
 function bindDataToForm_pickup(address,lat,lng){
     document.getElementById('searchInput_pickup').value = address;
 }
