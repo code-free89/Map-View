@@ -15,7 +15,7 @@ var initial_width = -1;
 const labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var locations = [];
 var infowindow;
-var mySpreadsheet = 'https://docs.google.com/spreadsheets/d/1RE7iiyntY6O5ZVHlecHa__LDpFigr-wiIC_X2SUvMpk/edit#gid=0';
+var mySpreadsheet = 'https://docs.google.com/spreadsheets/d/1o0J_u-aS2LwU6xJodKn6d6jyknpkVu62Aj33nbjvHRI/edit#gid=0';
 var m_cluster;
 $(document).ready(function () {
     var height = $(window).height() - 60;
@@ -34,12 +34,16 @@ $(document).ready(function () {
     $('input[type="checkbox"]').change(function() {
       set_Filter();
     });
+
+    $('#logo-image').click(function() {
+      initMap();
+    });
 });
 
 function initLocations() {
   for (let i = 0; i < $('tbody tr').length; i ++)
   {
-    locations.push({ lat: parseFloat($('tbody tr').eq(i).children().eq(0).text()), lng: parseFloat($('tbody tr').eq(i).children().eq(1).text()) });
+    locations.push({ lat: parseFloat($('tbody tr').eq(i).children().eq(4).text()), lng: parseFloat($('tbody tr').eq(i).children().eq(5).text()) });
   }
 }
 function initMap() {
@@ -255,7 +259,7 @@ function initMap() {
       var marker = new google.maps.Marker({
         position: location,
         icon: {
-          url: "assets/images/fav.png", // url
+          url: "assets/images/Givaudan-textile-Logo.png", // url
           scaledSize: new google.maps.Size(20, 20), // scaled size
         },
       });
@@ -271,11 +275,17 @@ function initMap() {
         <div class='map_info_wrapper'>
           <div class='property_content_wrap'>
             <div class='property_title'>
-              <span>Lorem Ipsum</span>
+              <span>` + $('tbody tr').eq(i).children().eq(0).text() + `</span>
             </div>
     
             <div class='property_content'>
-              <span>Lorem ipsum is a dummy text of the printing and typesetting industry</span>
+              <span>` + $('tbody tr').eq(i).children().eq(1).text() + `</span>
+            </div>
+            <div class='property_content'>
+              <span>` + $('tbody tr').eq(i).children().eq(2).text() + `</span>
+            </div>
+            <div class='property_content'>
+              <span>` + $('tbody tr').eq(i).children().eq(3).text() + `</span>
             </div>
 
             <div class='property_activity'>
@@ -363,7 +373,6 @@ function openNav() {
 }
 
 function set_Filter() {
-  console.log('a');
   locations = [];
   var filter_str = [];
   for(let i = 0; i < $('input[type="checkbox"]').length; i ++) {
@@ -373,8 +382,8 @@ function set_Filter() {
   for (let i = 0; i < $('tbody tr').length; i ++)
   {
     for(let j = 0; j < filter_str.length; j ++) {
-      if($('tbody tr').eq(i).children().eq(2).text() == filter_str[j])
-        locations.push({ lat: parseFloat($('tbody tr').eq(i).children().eq(0).text()), lng: parseFloat($('tbody tr').eq(i).children().eq(1).text()) });
+      if($('tbody tr').eq(i).children().eq(6).text() == filter_str[j])
+        locations.push({ lat: parseFloat($('tbody tr').eq(i).children().eq(4).text()), lng: parseFloat($('tbody tr').eq(i).children().eq(5).text()) });
     }
   }
   m_cluster.clearMarkers();
@@ -382,7 +391,7 @@ function set_Filter() {
     var marker = new google.maps.Marker({
       position: location,
       icon: {
-        url: "assets/images/fav.png", // url
+        url: "assets/images/Givaudan-textile-Logo.png", // url
         scaledSize: new google.maps.Size(20, 20), // scaled size
       },
     });
@@ -396,26 +405,32 @@ function set_Filter() {
     google.maps.event.addListener(marker, 'mouseover', function() {
       var contents = `
       <div class='map_info_wrapper'>
-        <div class='property_content_wrap'>
-          <div class='property_title'>
-            <span>Lorem Ipsum</span>
-          </div>
-  
-          <div class='property_content'>
-            <span>Lorem ipsum is a dummy text of the printing and typesetting industry</span>
-          </div>
+          <div class='property_content_wrap'>
+            <div class='property_title'>
+              <span>` + $('tbody tr').eq(i).children().eq(0).text() + `</span>
+            </div>
+    
+            <div class='property_content'>
+              <span>` + $('tbody tr').eq(i).children().eq(1).text() + `</span>
+            </div>
+            <div class='property_content'>
+              <span>` + $('tbody tr').eq(i).children().eq(2).text() + `</span>
+            </div>
+            <div class='property_content'>
+              <span>` + $('tbody tr').eq(i).children().eq(3).text() + `</span>
+            </div>
 
-          <div class='property_activity'>
-            <span>Activities</span>
+            <div class='property_activity'>
+              <span>Activities</span>
+            </div>
+    
+            <div class='property_detail'>
+              <span><b>Sales:</b> T&W</span>
+              <span><b>Creation and application:</b> T&W</span>
+              <span><b>Production:</b> T&W, F&B</span>
+            </div>
           </div>
-  
-          <div class='property_detail'>
-            <span><b>Sales:</b> T&W</span>
-            <span><b>Creation and application:</b> T&W</span>
-            <span><b>Production:</b> T&W, F&B</span>
-          </div>
-        </div>
-      </div>`;
+        </div>`;
       infowindow = new google.maps.InfoWindow({
           content: contents,
       });

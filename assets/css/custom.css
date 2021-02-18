@@ -110,28 +110,6 @@
     }
 }
 
- /* #propertymap .gm-style > div > div > div > div > div > div > div {
-    background: none!important;
+#logo-image:hover {
+    cursor: pointer;
 }
-
-.gm-style > div > div > div > div > div > div > div:nth-child(2) {
-     box-shadow: none!important;
-}
- #propertymap .gm-style-iw > div > div{
-    background: rgb(39, 48, 49)!important;
-}
-
- #propertymap .gm-style-iw a{
-    text-decoration: none;
-}
-
- #propertymap .gm-style-iw > div{
-    width: 245px !important
-}
- #propertymap .gm-style-iw .property_content_wrap {
-    padding: 0px 20px;
-}
-
- #propertymap .gm-style-iw .property_title{
-    min-height: auto;
-} */
