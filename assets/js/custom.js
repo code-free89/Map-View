@@ -38,6 +38,9 @@ $(document).ready(function () {
     $('#logo-image').click(function() {
       initMap();
     });
+    $('#logo-title').click(function() {
+      initMap();
+    });
 });
 
 function initLocations() {
@@ -267,7 +270,8 @@ function initMap() {
         infowindow.close();
         map.setCenter(this.getPosition());
         if(zoom_level != 18) {
-          window.location.href = "http://www.blanklink.com";
+          console.log($('tbody tr').eq(i).children().eq(7).text());
+          window.location.href = "https://" + $('tbody tr').eq(i).children().eq(7).text();
         }
       });
       google.maps.event.addListener(marker, 'mouseover', function() {
@@ -293,8 +297,8 @@ function initMap() {
             </div>
     
             <div class='property_detail'>
-              <span><b>Sales:</b> T&W</span>
-              <span><b>Creation and application:</b> T&W</span>
+              <span><b>Sales:</b> T&W</span><br>
+              <span><b>Creation and application:</b> T&W</span><br>
               <span><b>Production:</b> T&W, F&B</span>
             </div>
           </div>
